@@ -521,6 +521,13 @@ Fix Namespace:
 Within the opt/ros/melodic/share/pacmod/launch file add ns="pacmod" to the node pkg="socketcan_bridge" and pkg="pacmod" elements. 
 
 
+-------------------------------------------------------
+-----  HDMaps
+-------------------------------------------------------
+
+
+$ /apollo/modules/map/data
+
 
 
 
