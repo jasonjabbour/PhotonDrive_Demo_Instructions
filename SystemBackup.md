@@ -26,7 +26,7 @@
     ```bash
     cd / tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt
     ```
-        - This will take a while. You can add the `v` option to `tar` for verbose output.
+    - This will take a while. You can add the `v` option to `tar` for verbose output.
 
 ## Cleanup
 9. Unmount the USB drive.
@@ -34,6 +34,7 @@
 10. Check that the usb is unmounted.
     - Run `df`. You should see no entry for `/mnt/usb`.
 11. Disconnect USB drive.
-12. Shut down system. In theory, you can probably just hot unplug it.
-13. Reboot system.
+    - Shut down system.
+    - In theory, you can probably just hot unplug it.
+    - Reboot system.
 
