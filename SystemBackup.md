@@ -23,9 +23,11 @@
 ## Backup process
 7. Look at files on the USB drive, delete files, copy files to USB drive as needed.
 8. Make a tarball backup of the entire system onto the USB drive (check drive space first).
+   - Ensure that the backup starts at the top level.
     ```bash
     cd /
     ```
+    - Start the backup process.
     ```bash
      tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt
     ```
