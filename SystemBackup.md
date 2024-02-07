@@ -29,7 +29,7 @@
     ```
     - Start the backup process.
     ```bash
-     tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt
+     tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt .
     ```
     - This will take a while. You can add the `v` option to `tar` for verbose output.
 
