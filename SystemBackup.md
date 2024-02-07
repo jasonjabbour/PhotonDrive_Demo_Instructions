@@ -24,7 +24,10 @@
 7. Look at files on the USB drive, delete files, copy files to USB drive as needed.
 8. Make a tarball backup of the entire system onto the USB drive (check drive space first).
     ```bash
-    cd / tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt
+    cd /
+    ```
+    ```bash
+     tar cpzf /mnt/usb/helium-backup-20230803.tgz --exclude=/boot --exclude=/dev --exclude=/proc --exclude=/run --exclude=/var/cache/apt --exclude=/mnt
     ```
     - This will take a while. You can add the `v` option to `tar` for verbose output.
 
