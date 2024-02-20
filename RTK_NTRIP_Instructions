@@ -16,7 +16,7 @@ Step 1:
 
 On Linux side once you have confirmed internet access from the Spectra working:
 
-socat -d -d -T 8 tcp4-listen:10001,fork,reuseaddr tcp4-connect:polaris.pointonenav.com:2101,connect-timeout=4
+socat -d -d -d -T 8 tcp4-listen:10001,fork,reuseaddr tcp4-connect:polaris.pointonenav.com:2101,connect-timeout=4
 
 (NOTE: update 148.149.0.87 and 2101 to the appropriate remote IP and port associate with your base station accordingly)
 (NOTE: install socat from apt if it isn't installed)
