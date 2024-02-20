@@ -1,0 +1,105 @@
+-----------------------------------------------------------------------------------------------------------
+
+Step 0: Find an RTK NTRIP provider. Here we are using PointOne. Make an account and get the following info:
+
+NTRIP Host (aka Hostname, Endpoint, Caster): polaris.pointonenav.com (Note if in Europe: polaris-eu.pointonenav.com)
+Port: 2101
+Account: "Username" from the Devices section of our web app
+Password: "Password" from the Devices section of our web app
+Mountpoint: POLARIS
+
+Username: z7rj4avc6b
+
+Password: svc6brexd7
+
+Step 1: 
+
+On Linux side once you have confirmed internet access from the Spectra working:
+
+socat -d -d -T 8 tcp4-listen:10001,fork,reuseaddr tcp4-connect:polaris.pointonenav.com:2101,connect-timeout=4
+
+(NOTE: update 148.149.0.87 and 2101 to the appropriate remote IP and port associate with your base station accordingly)
+(NOTE: install socat from apt if it isn't installed)
+(NOTE: the -d -d lets you see debug info from socat, to show that the NovAtel is connecting and then that socat passes the connection through to the MDOT RTK IP address)
+
+How to Telnet:
+
+Find you Novatel adress. It is the address key in the data[tcp] dictionary key.
+
+$ cat apollo/modules/calibration/dat/gem/gnss/gnss_conf.pb.txt
+
+Telnet into Novatel:
+
+$ telnet 192.168.100.150 3005
+
+Once you telnet you can run the following commands. Note. the 192.168.100.126 address was found by going to settings > network > ethernet (ens1f2)
+
+On NovAtel after telnetting to it (replace IP address 192.168.100.126 with the IP to your Spectra from the NovAtel):
+
+INTERFACEMODE NCOM1 RTCMV3 NOVATEL OFF
+
+NTRIPCONFIG NCOM1 CLIENT V1 "192.168.100.126:10001" "POLARIS" "z7rj4avc6b" "svc6brexd7"
+
+LOG NCOM1 GPGGA ONTIME 5
+
+To monitor that there is data coming in:
+
+LOG PASSNCOM1A ONCHANGED
+
+Once you have seen enough, send another command without ONCHANGED to stop it:
+
+LOG PASSNCOM1A
+
+Check your RTK position:
+
+LOG RTKPOS ONTIME 5
+
+Once you've seen enough, send another command without ONTIME to stop it:
+
+LOG RTKPOS
+
+If this works as expected:
+
+SAVECONFIG
+
+-----------------------------------------------------------------------------------------------------------
+
+Step 2:
+To automate socat commandline, you can create a service file
+
+/etc/systemd/system/rtk_corrections.service
+------------------------------------------------
+[Unit]
+Description=Service to establish a connection for RTK corrections
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/dev/bin/socat_rtk.sh polaris.pointonenav.com 2101 10001
+
+[Install]
+WantedBy=multi-user.target
+------------------------------------------------
+
+/home/dev/bin/socat_rtk.sh
+------------------------------------------------
+#!/bin/bash
+
+# parameters: $1 for remote IP, $2 for remote+local port
+# listen on $2 and fork, and establish connection to RTK server at $1 on $2
+
+while true;
+do
+	socat -T 8 tcp4-listen:$3,fork,reuseaddr tcp4-connect:$1:$2,connect-timeout=4
+	sleep 2
+done
+------------------------------------------------
+
+To make this bash script executable:
+
+sudo chmod +x /home/dev/bin/socat_rtk.sh
+
+To tell systemd to start services automatically at boot:
+
+sudo systemctl enable rtk_corrections.service
+
